@@ -1,0 +1,58 @@
+=== Strong Phrase
+--- kwim
+I *like* pie.
+--- byte
++para
+ I 
++bold
+ like
+-bold
+  pie.
+-para
+--- html
+<p>I <strong>like</strong> pie.</p>
+--- markdown
+I **like** pie.
+--- pod
+I B<like> pie.
+
+=== Emphasis Phrase
+--- kwim
+I /like/ pie.
+--- byte
++para
+ I 
++emph
+ like
+-emph
+  pie.
+-para
+--- html
+<p>I <em>like</em> pie.</p>
+--- markdown
+I _like_ pie.
+--- pod
+I I<like> pie.
+
+=== Strong+Emhpasis+Code Phrase
+--- kwim
+I like */`pi`/*.
+--- byte
++para
+ I like 
++bold
++emph
++code
+ pi
+-code
+-emph
+-bold
+ .
+-para
+--- html
+<p>I like <strong><em><code>pi</code></em></strong>.</p>
+--- markdown
+I like **_`pi`_**.
+--- pod
+I like B<<< I<< C<pi> >> >>>.
+
