@@ -1,10 +1,8 @@
 ---
-abstract: 'Know What I Mean?!'
+abstract: 'Known What I Mean'
 author:
   - 'Ingy döt Net <ingy@cpan.org>'
-build_requires:
-  HTML::Escape: '0'
-  XXX: '0'
+build_requires: {}
 configure_requires:
   ExtUtils::MakeMaker: '6.30'
 dynamic_config: 0
@@ -15,10 +13,11 @@ meta-spec:
   version: '1.4'
 name: Kwim
 requires:
-  Pegex: '0.25'
+  HTML::Escape: '0'
+  Pegex: '0.30'
   perl: v5.8.1
 resources:
   bugtracker: https://github.com/ingydotnet/kwim-pm/issues
   homepage: https://github.com/ingydotnet/kwim-pm
   repository: https://github.com/ingydotnet/kwim-pm.git
-version: 0.0.1
+version: 0.0.2

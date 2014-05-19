@@ -1,3 +1,4 @@
+use lib 'inc';
 use lib '../pegex-pm/lib';
 use lib '../testml-pm/lib';
 
@@ -15,7 +16,6 @@ use Kwim::Byte;
 use Kwim::HTML;
 use Kwim::Markdown;
 use Kwim::Pod;
-use XXX;
 
 sub parse {
     my ($self, $kwim, $emitter) = @_;
@@ -27,7 +27,7 @@ sub parse {
         receiver => "Kwim::$emitter"->new,
         # debug => 1,
     );
-    # XXX($parser->grammar->tree);
+    # use XXX; XXX($parser->grammar->tree);
     str $parser->parse($kwim);
 }
 
@@ -35,7 +35,7 @@ __DATA__
 
 %TestML 0.1.0
 
-# Diff = 1
+Diff = 1
 # Plan = 4
 
 Label = 'Kwim to ByteCode - $BlockLabel'
@@ -53,6 +53,7 @@ Label = 'Kwim to Pod - $BlockLabel'
 %Include list-data.tml
 %Include head.tml
 %Include phrase.tml
+%Include phrase-func.tml
 %Include hyper.tml
 %Include link.tml
 %Include edge.tml

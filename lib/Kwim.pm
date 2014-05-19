@@ -1,5 +1,6 @@
-# ABSTRACT: Know What I Mean?!
+# ABSTRACT: Known What I Mean
 package Kwim;
+$Kwim::VERSION = '0.0.2';
 use Pegex::Parser;
 use Kwim::Grammar;
 

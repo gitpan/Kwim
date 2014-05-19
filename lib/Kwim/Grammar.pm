@@ -1,4 +1,5 @@
 package Kwim::Grammar;
+$Kwim::Grammar::VERSION = '0.0.2';
 use base 'Pegex::Grammar';
 
 use constant file => '../kwim-pgx/kwim.pgx';
@@ -78,13 +79,13 @@ sub make_tree {
       '.rgx' => qr/\G(\+\ .*\r?\n(?:\+\ .*\r?\n|(?:\ *\r?\n)*\ \ .*\r?\n)*(?:\ *\r?\n)?)/
     },
     'block_para' => {
-      '.rgx' => qr/\G((?:(?![\ \*=\#\n]\ ).*\S.*\r?\n)+)(?:\ *\r?\n)?/
+      '.rgx' => qr/\G((?:(?![\ \*=\#\n]\ ).*\S.*(?:\r?\n|\z))+)(?:\ *\r?\n)?/
     },
     'block_pref' => {
       '.rgx' => qr/\G((?:(?:\ *\r?\n)*\ \ .*\r?\n)+)(?:\ *\r?\n)?/
     },
     'block_title' => {
-      '.rgx' => qr/\G((?:(?![\ \*=\#\n]\ ).*\S.*\r?\n))={3,}\r?\n(?:(?:\ *\r?\n)((?:(?![\ \*=\#\n]\ ).*\S.*\r?\n))(?=(?:\ *\r?\n)|\z))?(?:\ *\r?\n)?/
+      '.rgx' => qr/\G((?:(?![\ \*=\#\n]\ ).*\S.*(?:\r?\n|\z)))={3,}\r?\n(?:(?:\ *\r?\n)((?:(?![\ \*=\#\n]\ ).*\S.*(?:\r?\n|\z)))(?=(?:\ *\r?\n)|\z))?(?:\ *\r?\n)?/
     },
     'block_top' => {
       '.any' => [
@@ -118,19 +119,7 @@ sub make_tree {
       ]
     },
     'block_verse' => {
-      '.rgx' => qr/\G\.\r?\n((?:(?![\ \*=\#\n]\ ).*\S.*\r?\n)+)(?:\ *\r?\n)?/
-    },
-    'char_bold' => {
-      '.rgx' => qr/\G\*/
-    },
-    'char_emph' => {
-      '.rgx' => qr/\G\//
-    },
-    'char_escape' => {
-      '.rgx' => qr/\G\\(.)/
-    },
-    'char_next' => {
-      '.rgx' => qr/\G([\s\S])/
+      '.rgx' => qr/\G\.\r?\n((?:(?![\ \*=\#\n]\ ).*\S.*(?:\r?\n|\z))+)(?:\ *\r?\n)?/
     },
     'document' => {
       '+min' => 0,
@@ -142,17 +131,38 @@ sub make_tree {
     'line_comment' => {
       '.rgx' => qr/\G\#\ ?(.*?)\r?\n(?:\ *\r?\n)?/
     },
+    'marker_bold' => {
+      '.rgx' => qr/\G\*/
+    },
+    'marker_del' => {
+      '.rgx' => qr/\G\-\-/
+    },
+    'marker_emph' => {
+      '.rgx' => qr/\G\//
+    },
+    'marker_escape' => {
+      '.rgx' => qr/\G\\(.)/
+    },
+    'marker_func_end' => {
+      '.rgx' => qr/\G\>/
+    },
+    'marker_func_start' => {
+      '.rgx' => qr/\G</
+    },
+    'marker_next' => {
+      '.rgx' => qr/\G([\s\S])/
+    },
     'phrase_bold' => {
       '.all' => [
         {
-          '.ref' => 'char_bold'
+          '.rgx' => qr/\G\*(?=\S[^\*])/
         },
         {
           '+min' => 1,
           '.all' => [
             {
               '+asr' => -1,
-              '.ref' => 'char_bold'
+              '.ref' => 'marker_bold'
             },
             {
               '.ref' => 'phrase_markup'
@@ -160,24 +170,24 @@ sub make_tree {
           ]
         },
         {
-          '.ref' => 'char_bold'
+          '.ref' => 'marker_bold'
         }
       ]
     },
     'phrase_code' => {
       '.rgx' => qr/\G`([^`]*?)`/
     },
-    'phrase_emph' => {
+    'phrase_del' => {
       '.all' => [
         {
-          '.ref' => 'char_emph'
+          '.rgx' => qr/\G\-\-(?=\S)(?!\-\-)/
         },
         {
           '+min' => 1,
           '.all' => [
             {
               '+asr' => -1,
-              '.ref' => 'char_emph'
+              '.ref' => 'marker_del'
             },
             {
               '.ref' => 'phrase_markup'
@@ -185,12 +195,53 @@ sub make_tree {
           ]
         },
         {
-          '.ref' => 'char_emph'
+          '.ref' => 'marker_del'
+        }
+      ]
+    },
+    'phrase_emph' => {
+      '.all' => [
+        {
+          '.rgx' => qr/\G\/(?=\S[^\/])/
+        },
+        {
+          '+min' => 1,
+          '.all' => [
+            {
+              '+asr' => -1,
+              '.ref' => 'marker_emph'
+            },
+            {
+              '.ref' => 'phrase_markup'
+            }
+          ]
+        },
+        {
+          '.ref' => 'marker_emph'
         }
       ]
     },
     'phrase_func' => {
-      '.rgx' => qr/\G<([^\>]+)\>/
+      '.all' => [
+        {
+          '.ref' => 'marker_func_start'
+        },
+        {
+          '+min' => 1,
+          '-flat' => 1,
+          '.any' => [
+            {
+              '.rgx' => qr/\G([^\>]+)/
+            },
+            {
+              '.ref' => 'phrase_func'
+            }
+          ]
+        },
+        {
+          '.ref' => 'marker_func_end'
+        }
+      ]
     },
     'phrase_hyper' => {
       '.any' => [
@@ -236,10 +287,13 @@ sub make_tree {
           '.ref' => 'phrase_text'
         },
         {
-          '.ref' => 'char_escape'
+          '.ref' => 'marker_escape'
         },
         {
           '.ref' => 'phrase_func'
+        },
+        {
+          '.ref' => 'phrase_code'
         },
         {
           '.ref' => 'phrase_bold'
@@ -248,7 +302,7 @@ sub make_tree {
           '.ref' => 'phrase_emph'
         },
         {
-          '.ref' => 'phrase_code'
+          '.ref' => 'phrase_del'
         },
         {
           '.ref' => 'phrase_hyper'
@@ -257,12 +311,12 @@ sub make_tree {
           '.ref' => 'phrase_link'
         },
         {
-          '.ref' => 'char_next'
+          '.ref' => 'marker_next'
         }
       ]
     },
     'phrase_text' => {
-      '.rgx' => qr/\G((?:(?![<\*\/`"\[\\]|https?:)[\s\S])+)/
+      '.rgx' => qr/\G((?:(?![<`\*\/\-\-"\[\\]|https?:)[\s\S])+)/
     },
     'text_markup' => {
       '+min' => 1,

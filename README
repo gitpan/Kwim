@@ -1,5 +1,5 @@
 NAME
-    Kwim - Know What I Mean?!
+    kwim - Know What I Mean?!
 
 DESCRIPTION
     Kwim is a plain text markup language that converts to many formats:
@@ -143,8 +143,8 @@ DESCRIPTION
     markups.
 
   Kwim Syntax
-    There are 4 sets of syntax to define: block * implicit, phrase *
-    implicit, block * explicit and phrase * explicit. There are also
+    There are 4 sets of syntax to define: block / implicit, phrase /
+    implicit, block / explicit and phrase / explicit. There are also
     escaping mechanisms.
 
    Block / Implicit Syntaxes

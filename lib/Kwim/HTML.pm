@@ -1,7 +1,8 @@
 use strict;
 package Kwim::HTML;
+$Kwim::HTML::VERSION = '0.0.2';
 use base 'Kwim::Markup';
-use XXX -with => 'YAML::XS';
+# use XXX -with => 'YAML::XS';
 
 use HTML::Escape;
 
@@ -57,6 +58,20 @@ sub render_pref {
     "<pre><code>$out\n</code></pre>\n";
 }
 
+sub render_func {
+    my ($self, $node) = @_;
+    if ($node =~ /^(\w[\-\w]*) ?((?s:.*)?)$/) {
+        my ($name, $args) = ($1, $2);
+        $name =~ s/-/_/g;
+        my $method = "phrase_func_$name";
+        if ($self->can($method)) {
+            my $out = $self->$method($args);
+            return $out if defined $out;
+        }
+    }
+    "&lt;$node&gt;";
+}
+
 sub render_title {
     my ($self, $node) = @_;
     my $out = $self->render($node);
@@ -91,6 +106,12 @@ sub render_comment {
     }
 }
 
+sub render_code {
+    my ($self, $node) = @_;
+    my $out = $self->render($node);
+    "<code>$out</code>";
+}
+
 sub render_bold {
     my ($self, $node) = @_;
     my $out = $self->render($node);
@@ -103,10 +124,10 @@ sub render_emph {
     "<em>$out</em>";
 }
 
-sub render_code {
+sub render_del {
     my ($self, $node) = @_;
     my $out = $self->render($node);
-    "<code>$out</code>";
+    "<del>$out</del>";
 }
 
 sub render_hyper {
@@ -143,6 +164,67 @@ $out
 </body>
 </html>
 ...
+}
+
+#------------------------------------------------------------------------------
+sub format_phrase_func_html {
+    my ($self, $tag, $class, $attrib, $content) = @_;
+    my $attribs = '';
+    if (@$class) {
+        $attribs = ' class="' . join(' ', @$class) . '"';
+    }
+    if (@$attrib) {
+        $attribs = ' ' . join(' ', map {
+            /=".*"$/ ? $_ : do { s/=(.*)/="$1"/; $_ }
+        } @$attrib);
+    }
+    length($content)
+    ? "<$tag$attribs>$content</$tag>"
+    : "<$tag$attribs/>";
+}
+
+sub phrase_func_bold {
+    my ($self, $args) = @_;
+    my ($success, $class, $attrib, $content) =
+        $self->parse_phrase_func_args_html($args);
+    return unless $success;
+    $self->format_phrase_func_html('strong', $class, $attrib, $content);
+}
+
+sub parse_phrase_func_args_html {
+    my ($self, $args) = @_;
+    my ($class, $attrib, $content) = ([], [], '');
+    $args =~ s/^ //;
+    if ($args =~ /\A((?:\\:|[^\:])*):((?s:.*))\z/) {
+        $attrib = $1;
+        $content = $2;
+        $attrib =~ s/\\:/:/g;
+        ($class, $attrib) = $self->parse_attrib($attrib);
+    }
+    else {
+        $content = $args;
+    }
+    return 1, $class, $attrib, $content;
+}
+
+sub parse_attrib {
+    my ($self, $text) = @_;
+    my ($class, $attrib) = ([], []);
+    while (length $text) {
+        if ($text =~ s/^\s*(\w[\w\-]*)(?=\s|\z)\s*//) {
+            push @$class, $1;
+        }
+        elsif ($text =~ s/^\s*(\w[\w\-]*="[^"]*")(?=\s|\z)s*//) {
+            push @$attrib, $1;
+        }
+        elsif ($text =~ s/^\s*(\w[\w\-]*=\S+)(?=\s|\z)s*//) {
+            push @$attrib, $1;
+        }
+        else {
+            last;
+        }
+    }
+    return $class, $attrib;
 }
 
 1;

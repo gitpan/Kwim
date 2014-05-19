@@ -8,7 +8,7 @@ See http://github.com/ingydotnet/kwim-pm#readme
 
 =head1 NAME
 
-Kwim - Know What I Mean?!
+kwim - Know What I Mean?!
 
 =head1 DESCRIPTION
 
@@ -186,8 +186,8 @@ blocks inside blocks in a way that is not available in most markups.
 
 =head2 Kwim Syntax
 
-There are 4 sets of syntax to define: block I< implicit, phrase > implicit,
-block I< explicit and phrase > explicit. There are also escaping mechanisms.
+There are 4 sets of syntax to define: block / implicit, phrase / implicit,
+block / explicit and phrase / explicit. There are also escaping mechanisms.
 
 =head3 Block / Implicit Syntaxes
 

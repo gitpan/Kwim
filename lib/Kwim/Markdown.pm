@@ -1,8 +1,9 @@
 use strict;
 package Kwim::Markdown;
+$Kwim::Markdown::VERSION = '0.0.2';
 use base 'Kwim::Markup';
 
-use XXX -with => 'YAML::XS';
+# use XXX -with => 'YAML::XS';
 
 use constant top_block_separator => "\n";
 

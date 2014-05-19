@@ -1,7 +1,8 @@
 use strict;
 package Kwim::Tree;
+$Kwim::Tree::VERSION = '0.0.2';
 use base 'Pegex::Tree';
-use XXX -with => 'YAML::XS';
+# use XXX -with => 'YAML::XS';
 
 sub got_block_blank {
     my ($self, $text) = @_;
@@ -102,7 +103,12 @@ sub got_block_para {
 
 sub got_phrase_func {
     my ($self, $content) = @_;
-    +{func => [split ' ', $content, 2]};
+    +{func => join '', @$content};
+}
+
+sub got_phrase_code {
+    my ($self, $content) = @_;
+    $self->add(code => $content);
 }
 
 sub got_phrase_bold {
@@ -115,9 +121,9 @@ sub got_phrase_emph {
     $self->add(emph => $content);
 }
 
-sub got_phrase_code {
+sub got_phrase_del {
     my ($self, $content) = @_;
-    $self->add(code => $content);
+    $self->add(del => $content);
 }
 
 sub got_phrase_hyper_named {

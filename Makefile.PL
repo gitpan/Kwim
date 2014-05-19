@@ -10,7 +10,7 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Know What I Mean?!",
+  "ABSTRACT" => "Known What I Mean",
   "AUTHOR" => "Ingy d\x{f6}t Net <ingy\@cpan.org>",
   "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
@@ -23,13 +23,11 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "Kwim",
   "PREREQ_PM" => {
-    "Pegex" => "0.25"
-  },
-  "TEST_REQUIRES" => {
     "HTML::Escape" => 0,
-    "XXX" => 0
+    "Pegex" => "0.30"
   },
-  "VERSION" => "0.0.1",
+  "TEST_REQUIRES" => {},
+  "VERSION" => "0.0.2",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -38,8 +36,7 @@ my %WriteMakefileArgs = (
 
 my %FallbackPrereqs = (
   "HTML::Escape" => 0,
-  "Pegex" => "0.25",
-  "XXX" => 0
+  "Pegex" => "0.30"
 );
 
 

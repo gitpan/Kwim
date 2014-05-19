@@ -38,6 +38,7 @@ sub parse {
     }
 
     $self->{position} = 0;
+    $self->{farthest} = 0;
 
     if (not UNIVERSAL::isa($input, 'Pegex::Input')) {
         $input = Pegex::Input->new(string => $input);
@@ -113,7 +114,12 @@ sub match_next {
         $match = [[]];
     }
     if ($max != 1) {
-        $match = [$match];
+        if ($next->{-flat}) {
+            $match = [ map { (ref($_) eq 'ARRAY') ? (@$_) : ($_) } @$match ];
+        }
+        else {
+            $match = [$match]
+        }
         $self->{farthest} = $position
             if ($self->{position} = $position) > $self->{farthest};
     }
@@ -176,15 +182,6 @@ sub match_all {
     }
     $set = [ $set ] if $len > 1;
     return $set;
-}
-
-sub match_all_flat {
-    my ($self, $list) = @_;
-    my $set = $self->match_all($list) or return 0;
-    while (grep {ref($_) eq 'ARRAY'} @$set) {
-        @$set = map { (ref($_) eq 'ARRAY') ? @$_ : $_ } @$set;
-    }
-    return [$set];
 }
 
 sub match_any {
