@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Pod;
-$Kwim::Pod::VERSION = '0.0.3';
+$Kwim::Pod::VERSION = '0.0.4';
 use base 'Kwim::Markup';
 
 # use XXX -with => 'YAML::XS';
@@ -44,10 +44,12 @@ sub render_blank { '' }
 
 sub render_title {
     my ($self, $node, $number) = @_;
-    my ($name, $text) = ref $node ? @$node : (undef, $node);
+    my ($name, $abstract) = ref $node ? @$node : (undef, $node);
     my $label = $self->option->{'pod-upper-head'} ? 'NAME' : 'Name';
-    if (defined $text) {
-        "=head1 $label\n\n$name - $text\n";
+    $name = $self->render($name);
+    if (defined $abstract) {
+        $abstract = $self->render($abstract);
+        "=head1 $label\n\n$name - $abstract\n";
     }
     else {
         "=head1 $name\n";
@@ -152,7 +154,7 @@ sub render_data {
             $out .= $self->render($def) . "\n\n";
         }
         if ($rest) {
-            $out .= $self->render($rest) . "\n";
+            $out .= $self->render($rest, "\n") . "\n";
         }
     }
     $out . "=back\n";

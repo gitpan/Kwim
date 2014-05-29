@@ -1,3 +1,6 @@
+0.0.4 Thu May 29 11:04:03 EDT 2014
+ - Fix a Pod bug in datalists
+
 0.0.3 Sun May 18 23:21:31 PDT 2014
  - Call perl with $^X. @eserte++
 

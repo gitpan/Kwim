@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Tree;
-$Kwim::Tree::VERSION = '0.0.3';
+$Kwim::Tree::VERSION = '0.0.4';
 use base 'Pegex::Tree';
 # use XXX -with => 'YAML::XS';
 
@@ -58,7 +58,7 @@ sub got_block_list_data {
     my $items = [
         map {
             my ($term, $def, $rest);
-            if (s/(.*?)\s*::\s*(\S.*)\n//) {
+            if (s/(.*?) :: +(\S.*)\n//) {
                 ($term, $def, $rest) = ($1, $2, $_);
                 $def = $self->collapse($self->parse($def));
             }
@@ -79,12 +79,11 @@ sub got_block_list_data {
 
 sub got_block_title {
     my ($self, $pair) = @_;
-    my ($name, $text) = @$pair;
-    if (defined $text) {
-        chomp $name;
-        chomp $text;
-        $text = $self->collapse($self->parse($text))->[0];
-        +{title => [ $name, $text ]};
+    my ($name, $abstract) = @$pair;
+    if (defined $abstract) {
+        $name = $self->collapse($self->parse($name));
+        $abstract = $self->collapse($self->parse($abstract));
+        +{title => [ $name, $abstract ]};
     }
     else {
         $self->add_parse(title => $name);
