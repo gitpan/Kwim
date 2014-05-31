@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Byte;
-$Kwim::Byte::VERSION = '0.0.4';
+$Kwim::Byte::VERSION = '0.0.5';
 use base 'Kwim::Markup';
 # use XXX -with => 'YAML::XS';
 
@@ -21,6 +21,7 @@ sub render_node {
 
 sub render_text {
     my ($self, $node) = @_;
+    return '' unless length $node;
     $node =~ s/\n/\\n/g;
     " $node\n";
 }

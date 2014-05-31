@@ -1,6 +1,6 @@
 use strict;
 package Kwim::HTML;
-$Kwim::HTML::VERSION = '0.0.4';
+$Kwim::HTML::VERSION = '0.0.5';
 use base 'Kwim::Markup';
 # use XXX -with => 'YAML::XS';
 
@@ -20,7 +20,6 @@ my $info = {
 
 sub render_text {
     my ($self, $text) = @_;
-    chomp $text;
     $text =~ s/\n/ /g;
     escape_html($text);
 }
