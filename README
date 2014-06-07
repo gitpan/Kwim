@@ -107,7 +107,7 @@ DESCRIPTION
 
         A paragraph *is* a block. It gets divided into phrases like 'pure text' and
         *bold text*. A bold phrase can be divided: *all bold /some italic/*.
-    
+
         * Lists are blocks.
         * Each item is a block.
           * A sublist is a block.
@@ -121,7 +121,7 @@ DESCRIPTION
     equivalent:
 
         A paragraph with some *bold text* in it.
-    
+
         <<< para
         A paragraph with some <bold bold text> in it.
         >>>
@@ -135,7 +135,7 @@ DESCRIPTION
           text on 2 lines
           * Subpoint a
         * Point two
-    
+
           A paragraph for point 2 followed by some preformatted text:
             # Code example
         * Point three

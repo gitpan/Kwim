@@ -1,5 +1,5 @@
 package Kwim::Grammar;
-$Kwim::Grammar::VERSION = '0.0.6';
+$Kwim::Grammar::VERSION = '0.0.7';
 use base 'Pegex::Grammar';
 
 use constant file => '../kwim-pgx/kwim.pgx';

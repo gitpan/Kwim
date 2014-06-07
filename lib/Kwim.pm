@@ -1,5 +1,5 @@
 package Kwim;
-$Kwim::VERSION = '0.0.6';
+$Kwim::VERSION = '0.0.7';
 use Pegex::Parser;
 use Kwim::Grammar;
 

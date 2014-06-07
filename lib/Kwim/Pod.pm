@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Pod;
-$Kwim::Pod::VERSION = '0.0.6';
+$Kwim::Pod::VERSION = '0.0.7';
 use base 'Kwim::Markup';
 
 # use XXX -with => 'YAML::XS';
@@ -67,7 +67,7 @@ sub render_pref {
     my ($self, $node) = @_;
     my $out = $node;
     chomp $out;
-    $out =~ s/^/    /gm;
+    $out =~ s/^(.)/    $1/gm;
     "$out\n";
 }
 

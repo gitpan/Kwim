@@ -7,9 +7,10 @@ Makefile.PL
 README
 bin/kwim
 inc/Pegex/Base.pm
+inc/Pegex/Bootstrap.pm
+inc/Pegex/Compiler.pm
 inc/Pegex/Grammar.pm
 inc/Pegex/Input.pm
-inc/Pegex/Optimizer.pm
 inc/Pegex/Parser.pm
 inc/Pegex/Receiver.pm
 inc/Pegex/Tree.pm
@@ -50,5 +51,6 @@ t/list.tml
 t/para.tml
 t/phrase-func.tml
 t/phrase.tml
+t/pre.tml
 t/release-pod-syntax.t
 t/test.t
