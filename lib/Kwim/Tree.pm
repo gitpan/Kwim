@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Tree;
-$Kwim::Tree::VERSION = '0.0.5';
+$Kwim::Tree::VERSION = '0.0.6';
 use base 'Pegex::Tree';
 # use XXX -with => 'YAML::XS';
 
@@ -17,6 +17,11 @@ sub got_block_comment {
 sub got_line_comment {
     my ($self, $text) = @_;
     $self->add(comment => $text);
+}
+
+sub got_block_rule {
+    my ($self, $text) = @_;
+    $self->add(rule => '');
 }
 
 sub got_block_head {
@@ -102,7 +107,7 @@ sub got_block_para {
 
 sub got_phrase_func {
     my ($self, $content) = @_;
-    +{func => join '', @$content};
+    +{func => $content};
 }
 
 sub got_phrase_code {

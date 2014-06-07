@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Pod;
-$Kwim::Pod::VERSION = '0.0.5';
+$Kwim::Pod::VERSION = '0.0.6';
 use base 'Kwim::Markup';
 
 # use XXX -with => 'YAML::XS';

@@ -29,12 +29,14 @@ inc/TestML/Util.pm
 lib/Kwim.pm
 lib/Kwim.pod
 lib/Kwim/Byte.pm
+lib/Kwim/CheatSheet.pod
 lib/Kwim/Grammar.pm
 lib/Kwim/HTML.pm
 lib/Kwim/Markdown.pm
 lib/Kwim/Markup.pm
 lib/Kwim/Pod.pm
 lib/Kwim/Tree.pm
+t/block.tml
 t/bugs.tml
 t/comment.tml
 t/edge.tml

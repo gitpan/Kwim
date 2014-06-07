@@ -12,15 +12,17 @@ DESCRIPTION
 
         *   Custom - HTML the way you want it
 
-    *   Manpage
-
-    *   DocBook
-
     *   MarkDown
 
         *   GitHub Flavored
 
     *   Pod
+
+    *   DocBook
+
+    *   Pod
+
+    *   Manpage
 
     *   AsciiDoc
 
@@ -85,7 +87,7 @@ DESCRIPTION
     leave those alone (at least in the normal prose context).
 
     This leaves a bunch of punctuation characters that we can do special
-    things with. Namely: "@#$%^&*=+|/~[]<>{}". Sometimes context matters.
+    things with. Namely: "@#$%^&*_=+|/~[]<>{}". Sometimes context matters.
     For instance it is very rare for a prose line to start with a period, so
     we can use that as a markup.
 

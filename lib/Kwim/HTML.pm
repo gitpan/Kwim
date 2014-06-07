@@ -1,6 +1,6 @@
 use strict;
 package Kwim::HTML;
-$Kwim::HTML::VERSION = '0.0.5';
+$Kwim::HTML::VERSION = '0.0.6';
 use base 'Kwim::Markup';
 # use XXX -with => 'YAML::XS';
 
@@ -30,6 +30,10 @@ sub render_para {
     chomp $out;
     my $spacer = $out =~ /\n/ ? "\n" : '';
     "<p>$spacer$out$spacer</p>\n";
+}
+
+sub render_rule {
+    "<hr/>\n";
 }
 
 sub render_blank {

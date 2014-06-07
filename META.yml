@@ -1,5 +1,5 @@
 ---
-abstract: 'Known What I Mean'
+abstract: 'Know What I Mean'
 author:
   - 'Ingy döt Net <ingy@cpan.org>'
 build_requires: {}
@@ -25,4 +25,4 @@ resources:
   bugtracker: https://github.com/ingydotnet/kwim-pm/issues
   homepage: https://github.com/ingydotnet/kwim-pm
   repository: https://github.com/ingydotnet/kwim-pm.git
-version: 0.0.5
+version: 0.0.6
