@@ -1,3 +1,6 @@
+0.0.8 Sun Jun  8 10:01:12 PDT 2014
+ - Fix for paragraphs in list items
+
 0.0.7 Sat Jun  7 12:26:51 PDT 2014
  - don't indent blank lines in Pod
 

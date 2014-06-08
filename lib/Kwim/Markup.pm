@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Markup;
-$Kwim::Markup::VERSION = '0.0.7';
+$Kwim::Markup::VERSION = '0.0.8';
 use Pegex::Base;
 use base 'Kwim::Tree';
 # use XXX -with => 'YAML::XS';
