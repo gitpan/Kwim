@@ -1,6 +1,6 @@
 use strict;
 package Kwim::HTML;
-$Kwim::HTML::VERSION = '0.0.9';
+$Kwim::HTML::VERSION = '0.0.10';
 use base 'Kwim::Markup';
 # use XXX -with => 'YAML::XS';
 
