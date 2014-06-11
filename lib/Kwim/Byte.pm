@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Byte;
-$Kwim::Byte::VERSION = '0.0.10';
+$Kwim::Byte::VERSION = '0.0.11';
 use base 'Kwim::Markup';
 # use XXX -with => 'YAML::XS';
 
