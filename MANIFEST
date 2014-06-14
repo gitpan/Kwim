@@ -7,8 +7,6 @@ Makefile.PL
 README
 bin/kwim
 inc/Pegex/Base.pm
-inc/Pegex/Bootstrap.pm
-inc/Pegex/Compiler.pm
 inc/Pegex/Grammar.pm
 inc/Pegex/Input.pm
 inc/Pegex/Optimizer.pm

@@ -1,3 +1,6 @@
+0.0.13 Sat Jun 14 13:48:55 PDT 2014
+ - Fix metadata errors
+
 0.0.12 Sat Jun 14 11:50:57 PDT 2014
  - Add plugin support for phrase functions
  - Add new badge doc
