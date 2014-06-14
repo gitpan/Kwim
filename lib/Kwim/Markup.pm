@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Markup;
-$Kwim::Markup::VERSION = '0.0.11';
+$Kwim::Markup::VERSION = '0.0.12';
 use Pegex::Base;
 use base 'Kwim::Tree';
 # use XXX -with => 'YAML::XS';
@@ -52,6 +52,25 @@ sub render_node {
     my $out = $self->$method($node, $number);
     pop @{$self->{stack}};
     $out;
+}
+
+sub render_func {
+    my ($self, $node) = @_;
+    if ($node =~ /^([\-\w]+)(?:[\ \:]|\z)((?s:.*)?)$/) {
+        my ($name, $args) = ($1, $2);
+        (my $method = "phrase_func_$name") =~ s/-/_/g;
+        (my $plugin = "Kwim::Plugin::$name") =~ s/-/::/g;
+        while (1) {
+            if ($self->can($method)) {
+                my $out = $self->$method($args);
+                return $out if defined $out;
+            }
+            last if $plugin eq "Kwim::Plugin";
+            eval "require $plugin";
+            $plugin =~ s/(.*)::.*/$1/;
+        }
+    }
+    "<$node>";
 }
 
 sub at_top_level {

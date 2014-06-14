@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Pod;
-$Kwim::Pod::VERSION = '0.0.11';
+$Kwim::Pod::VERSION = '0.0.12';
 use base 'Kwim::Markup';
 
 # use XXX -with => 'YAML::XS';
@@ -69,20 +69,6 @@ sub render_pref {
     chomp $out;
     $out =~ s/^(.)/    $1/gm;
     "$out\n";
-}
-
-sub render_func {
-    my ($self, $node) = @_;
-    if ($node =~ /^([\-\w]+)(?:[\ \:]|\z)((?s:.*)?)$/) {
-        my ($name, $args) = ($1, $2);
-        $name =~ s/-/_/g;
-        my $method = "phrase_func_$name";
-        if ($self->can($method)) {
-            my $out = $self->$method($args);
-            return $out if defined $out;
-        }
-    }
-    "<$node>";
 }
 
 sub render_bold {
@@ -176,20 +162,6 @@ $out
 
 =cut
 ...
-}
-
-sub phrase_func_badge_travis {
-    my ($self, $args) = @_;
-    return unless $args =~ /^(\S+)\/(\S+)$/;
-    my $repo = $2;
-    qq{=for html\n<a href="https://travis-ci.org/$args"><img src="https://travis-ci.org/$args.png" alt="$repo"></a>\n\n}
-}
-
-sub phrase_func_badge_coveralls {
-    my ($self, $args) = @_;
-    return unless $args =~ /^(\S+)\/(\S+)$/;
-    my $repo = $2;
-    qq{=for html\n<a href="https://coveralls.io/r/$args?branch=master"><img src="https://coveralls.io/repos/$args/badge.png" alt="$repo"></a>\n\n}
 }
 
 1;

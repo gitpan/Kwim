@@ -1,6 +1,6 @@
 use strict;
 package Kwim::Tree;
-$Kwim::Tree::VERSION = '0.0.11';
+$Kwim::Tree::VERSION = '0.0.12';
 use base 'Pegex::Tree';
 # use XXX -with => 'YAML::XS';
 
