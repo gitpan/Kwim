@@ -1,3 +1,6 @@
+0.0.14 Wed Jun 18 10:57:49 PDT 2014
+ - Fix test bug on BSD
+
 0.0.13 Sat Jun 14 13:48:55 PDT 2014
  - Fix metadata errors
 

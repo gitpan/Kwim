@@ -17,6 +17,7 @@ no_index:
     - inc
     - t
     - xt
+    - example
 requires:
   HTML::Escape: '0'
   Pegex: '0.30'
@@ -25,4 +26,4 @@ resources:
   bugtracker: https://github.com/ingydotnet/kwim-pm/issues
   homepage: https://github.com/ingydotnet/kwim-pm
   repository: https://github.com/ingydotnet/kwim-pm.git
-version: 0.0.13
+version: 0.0.14
