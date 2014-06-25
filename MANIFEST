@@ -2,6 +2,7 @@
 Changes
 LICENSE
 MANIFEST
+META.json
 META.yml
 Makefile.PL
 README
@@ -11,7 +12,6 @@ inc/Pegex/Bootstrap.pm
 inc/Pegex/Compiler.pm
 inc/Pegex/Grammar.pm
 inc/Pegex/Input.pm
-inc/Pegex/Optimizer.pm
 inc/Pegex/Parser.pm
 inc/Pegex/Receiver.pm
 inc/Pegex/Tree.pm
@@ -33,7 +33,6 @@ inc/Text/Diff.pm
 lib/Kwim.pm
 lib/Kwim.pod
 lib/Kwim/Byte.pm
-lib/Kwim/CheatSheet.pod
 lib/Kwim/Grammar.pm
 lib/Kwim/HTML.pm
 lib/Kwim/Markdown.pm

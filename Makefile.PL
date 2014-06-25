@@ -25,7 +25,7 @@ my %WriteMakefileArgs = (
     "HTML::Escape" => 0,
     "Pegex" => "0.30"
   },
-  "VERSION" => "0.0.14",
+  "VERSION" => "0.0.15",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -1,6 +1,22 @@
 NAME
     kwim - Know What I Mean?!
 
+*** RENAME / DEPRECATION ***
+    Due to a certain unfortunate homonym, Kwim has been replaced by (renamed
+    to) Swim.
+
+    See:
+
+    *   Swim
+
+    *   <http://swimtext.org>
+
+    *   irc.freeenode.net#swimtext
+
+    Eventually Kwim will be removed from CPAN.
+
+    The existing documentation follows:
+
 DESCRIPTION
     Kwim is a plain text markup language that converts to many formats:
 
