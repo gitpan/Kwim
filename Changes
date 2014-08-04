@@ -1,3 +1,7 @@
+0.0.16 Sun Aug  3 23:21:43 PDT 2014
+ - Remove (c) from Copyright
+ - Remove most of doc (deprecation)
+
 0.0.15 Wed Jun 25 16:36:33 PDT 2014
  - Kwim is dead. Long live Swim.
  - Add deprecation notices to doc and warn in bin/kwim.
