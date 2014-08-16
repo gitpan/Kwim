@@ -1,3 +1,6 @@
+0.0.20 Sat Aug 16 16:06:09 PDT 2014
+ - Fix strict/warnings
+
 0.0.19 Sat Aug 16 14:05:49 PDT 2014
  - Remove =travis section
 
