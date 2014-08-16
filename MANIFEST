@@ -40,6 +40,7 @@ lib/Kwim/Markdown.pm
 lib/Kwim/Markup.pm
 lib/Kwim/Pod.pm
 lib/Kwim/Tree.pm
+t/000-compile-modules.t
 t/block.tml
 t/bugs.tml
 t/comment.tml
