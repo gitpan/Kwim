@@ -5,70 +5,64 @@ use Pegex::Input;
 use Pegex::Optimizer;
 use Scalar::Util;
 
-{
-    package Pegex::Constant;
-    our $Null = [];
-    our $Dummy = [];
-}
-
 has grammar => (required => 1);
 has receiver => ();
 has input => ();
-
-has rule => ();
-has parent => ();
-has 'debug' => (
-    default => sub {
-        exists($ENV{PERL_PEGEX_DEBUG}) ? $ENV{PERL_PEGEX_DEBUG} :
-        defined($Pegex::Parser::Debug) ? $Pegex::Parser::Debug :
-        0;
-    },
+has debug => (
+    exists($ENV{PERL_PEGEX_DEBUG}) ? $ENV{PERL_PEGEX_DEBUG} :
+    defined($Pegex::Parser::Debug) ? $Pegex::Parser::Debug :
+    0
 );
+sub BUILD {
+    my ($self) = @_;
+    $self->{throw_on_error} ||= 1;
+    # $self->{rule} = undef;
+    # $self->{parent} = undef;
+    # $self->{error} = undef;
+    # $self->{position} = undef;
+    # $self->{farthest} = undef;
+}
 
-has position => 0;
-has farthest => 0;
-
-has throw_on_error => 1;
-
+# XXX Add an optional $position argument. Default to 0. This is the position
+# to start parsing. Set position and farthest below to this value. Allows for
+# sub-parsing. Need to somehow return the finishing position of a subparse.
+# Maybe this all goes in a subparse() method.
 sub parse {
-    # XXX Add an optional $position argument. Default to 0. This is the
-    # position to start parsing. Set position and farthest below to this
-    # value. Allows for sub-parsing. Need to somehow return the finishing
-    # position of a subparse. Maybe this all goes in a subparse() method.
     my ($self, $input, $start) = @_;
 
-    if ($start) {
-        $start =~ s/-/_/g;
-    }
+    $start =~ s/-/_/g if $start;
 
     $self->{position} = 0;
     $self->{farthest} = 0;
 
-    if (not ref $input or not UNIVERSAL::isa($input, 'Pegex::Input')) {
-        $input = Pegex::Input->new(string => $input);
-    }
-    $self->{input} = $input;
-    $self->{input}->open unless $self->{input}{_is_open};
+    $self->{input} = (not ref $input)
+      ? Pegex::Input->new(string => $input)
+      : $input;
+
+    $self->{input}->open
+        unless $self->{input}{_is_open};
     $self->{buffer} = $self->{input}->read;
-    $self->{length} = length ${$self->{buffer}};
 
-    die "No 'grammar'. Can't parse" unless $self->{grammar};
+    die "No 'grammar'. Can't parse"
+        unless $self->{grammar};
 
-    $self->{grammar}{tree} = $self->{grammar}->tree;
+    $self->{grammar}{tree} ||= $self->{grammar}->make_tree;
 
     my $start_rule_ref = $start ||
         $self->{grammar}{tree}{'+toprule'} ||
-        ($self->{grammar}{tree}{'TOP'} ? 'TOP' : undef)
-            or die "No starting rule for Pegex::Parser::parse";
+        $self->{grammar}{tree}{'TOP'} & 'TOP' or
+        die "No starting rule for Pegex::Parser::parse";
 
-    die "No 'receiver'. Can't parse" unless $self->{receiver};
+    die "No 'receiver'. Can't parse"
+        unless $self->{receiver};
 
-    $self->{optimizer} = Pegex::Optimizer->new(
+    my $optimizer = Pegex::Optimizer->new(
         parser => $self,
         grammar => $self->{grammar},
         receiver => $self->{receiver},
     );
-    $self->{optimizer}->optimize_grammar($start_rule_ref);
+
+    $optimizer->optimize_grammar($start_rule_ref);
 
     # Add circular ref and weaken it.
     $self->{receiver}{parser} = $self;
@@ -81,13 +75,13 @@ sub parse {
     }
 
     my $match = $self->debug ? do {
-        my $method = $self->{optimizer}->make_trace_wrapper(\&match_ref);
+        my $method = $optimizer->make_trace_wrapper(\&match_ref);
         $self->$method($start_rule_ref, {'+asr' => 0});
     } : $self->match_ref($start_rule_ref, {});
 
     $self->{input}->close;
 
-    if (not $match or $self->{position} < $self->{length}) {
+    if (not $match or $self->{position} < length ${$self->{buffer}}) {
         $self->throw_error("Parse document failed for some reason");
         return;  # In case $self->throw_on_error is off
     }
@@ -95,11 +89,10 @@ sub parse {
     if ($self->{receiver}->can("final")) {
         $self->{rule} = $start_rule_ref;
         $self->{parent} = {};
-        # XXX mismatch with ruby port
         $match = [ $self->{receiver}->final(@$match) ];
     }
 
-    return $match->[0];
+    $match->[0];
 }
 
 sub match_next {
@@ -137,15 +130,14 @@ sub match_next {
             if ($self->{position} = $position) > $self->{farthest};
     }
 
-    # YYY ($result ? $next->{'-skip'} ? [] : $match : 0) if $main::x;
-    return ($result ? $next->{'-skip'} ? [] : $match : 0);
+    ($result ? $next->{'-skip'} ? [] : $match : 0);
 }
 
 sub match_rule {
     my ($self, $position, $match) = (@_, []);
     $self->{position} = $position;
-    $self->{farthest} = $self->{position}
-        if $self->{position} > $self->{farthest};
+    $self->{farthest} = $position
+        if $position > $self->{farthest};
     $match = [ $match ] if @$match > 1;
     my ($ref, $parent) = @{$self}{'rule', 'parent'};
     my $rule = $self->{grammar}{tree}{$ref}
@@ -172,16 +164,18 @@ sub match_rgx {
     my $buffer = $self->{buffer};
 
     pos($$buffer) = $self->{position};
-
     $$buffer =~ /$regexp/g or return;
+
     $self->{position} = pos($$buffer);
 
-    no strict 'refs';
-    my $match = [ map $$_, 1..$#+ ];
-    $match = [ $match ] if $#+ > 1;
     $self->{farthest} = $self->{position}
         if $self->{position} > $self->{farthest};
-    return $match;
+
+    no strict 'refs';
+    my $captures = [ map $$_, 1..$#+ ];
+    $captures = [ $captures ] if $#+ > 1;
+
+    return $captures;
 }
 
 sub match_all {
@@ -229,7 +223,8 @@ sub trace {
     print STDERR ' ' x $self->{indent};
     $self->{indent}++ if $indent;
     my $snippet = substr(${$self->{buffer}}, $self->{position});
-    $snippet = substr($snippet, 0, 30) . "..." if length $snippet > 30;
+    $snippet = substr($snippet, 0, 30) . "..."
+        if length $snippet > 30;
     $snippet =~ s/\n/\\n/g;
     print STDERR sprintf("%-30s", $action) .
         ($indent ? " >$snippet<\n" : "\n");
@@ -280,6 +275,13 @@ sub line_column {
     my $line = @{[substr($$buffer, 0, $position) =~ /(\n)/g]} + 1;
     my $column = $position - rindex($$buffer, "\n", $position);
     return [$line, $position];
+}
+
+# XXX Need to figure out what uses this. (sample.t)
+{
+    package Pegex::Constant;
+    our $Null = [];
+    our $Dummy = [];
 }
 
 1;

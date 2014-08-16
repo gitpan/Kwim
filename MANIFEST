@@ -8,7 +8,10 @@ META.yml
 Makefile.PL
 README
 bin/kwim
+inc/Pegex.pm
 inc/Pegex/Base.pm
+inc/Pegex/Bootstrap.pm
+inc/Pegex/Compiler.pm
 inc/Pegex/Grammar.pm
 inc/Pegex/Input.pm
 inc/Pegex/Optimizer.pm
@@ -23,13 +26,11 @@ inc/TestML/Compiler/Lite.pm
 inc/TestML/Compiler/Pegex.pm
 inc/TestML/Compiler/Pegex/AST.pm
 inc/TestML/Compiler/Pegex/Grammar.pm
-inc/TestML/Library.pm
 inc/TestML/Library/Debug.pm
 inc/TestML/Library/Standard.pm
 inc/TestML/Runtime.pm
 inc/TestML/Runtime/TAP.pm
 inc/TestML/Util.pm
-inc/Text/Diff.pm
 lib/Kwim.pm
 lib/Kwim.pod
 lib/Kwim/Byte.pm
@@ -39,6 +40,7 @@ lib/Kwim/Markdown.pm
 lib/Kwim/Markup.pm
 lib/Kwim/Pod.pm
 lib/Kwim/Tree.pm
+t/000-compile-modules.t
 t/block.tml
 t/bugs.tml
 t/comment.tml
